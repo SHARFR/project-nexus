@@ -1,25 +1,40 @@
-document.getElementById("signup-form").addEventListener("submit", function(event) {
-  event.preventDefault();
-  var email = document.getElementById("new-email").value;
-  var password = document.getElementById("new-password").value;
-  
-  // Basic email validation
-  if (!isValidEmail(email)) {
-    alert("Invalid email address");
-    return;
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+  try {
+    // Send login request to backend
+    const response = await fetch('/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await response.json();
+    alert(data.message);
+  } catch (error) {
+    console.error('Login failed:', error);
   }
-  
-  // Basic password validation
-  if (password.length < 8) {
-    alert("Password must be at least 8 characters long");
-    return;
-  }
-  
-  // If validations pass, you can proceed with form submission or other actions
-  alert("Sign up successful!");
 });
 
-function isValidEmail(email) {
-  var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return regex.test(email);
-}
+document.getElementById('signupForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('signupName').value;
+  const email = document.getElementById('signupEmail').value;
+  const password = document.getElementById('signupPassword').value;
+  try {
+    // Send signup request to backend
+    const response = await fetch('/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, email, password })
+    });
+    const data = await response.json();
+    alert(data.message);
+  } catch (error) {
+    console.error('Signup failed:', error);
+  }
+});
